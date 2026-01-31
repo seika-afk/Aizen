@@ -1,0 +1,31 @@
+-[x] build the system design
+-[x] backend
+-[x] frontend
+##############################
+BACKEND
+
+main parts 
+- [x] Run ffmpeg on image to test
+- [x] Chat Page : with AI
+- [] Window to show added images
+- [] coord tool [mark to get x and y positions]
+- [] undo - redo 
+- [] auth page
+- [] running ffmpeg using that chat result to modify image
+
+
+- [x] h Auth backend to store username ,pass and api 
+	- [x] decide on db 
+	- [x] quickly do it
+
+
+- [x] Chat page_ 
+	- [x] Read the code from currcall and Copy to aizen , no ui modification , just make it work
+	- [x] Able to send and recieve messages, no chat saving
+	- [x] Modification for fast api calling
+
+-[ ] Undo redo tool 
+	- [ ] Find if any , else remove  
+
+##########################
+FRONTEND
