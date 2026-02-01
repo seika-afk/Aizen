@@ -24,7 +24,7 @@ main parts
 	- [x] Able to send and recieve messages, no chat saving
 	- [x] Modification for fast api calling
 
--[ ] Undo redo tool 
+-[] Undo redo tool 
 	- [ ] Find if any , else remove  
 
 ##########################
