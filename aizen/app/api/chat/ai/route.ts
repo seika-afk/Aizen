@@ -1,24 +1,22 @@
-export const maxDuration =60;
 import { NextRequest,NextResponse } from "next/server";
-import { connectToDB } from "@/lib/db";
 import { GET_API } from "@/lib/me";
-import { addChat } from "@/lib/chatStore";
 const GEMINI_API_URL = process.env.GEMINI_URL
 
+export const maxDuration =60;
 
 
 export async function  POST(req:NextRequest){
 
 	try{
-	const user=await GET_API(req);
-	if(!user){
-	console.warn("USER NOT AUTHENTICATED")
+	//const user=await GET_API(req);
+	//if(!user){
+	//console.warn("USER NOT AUTHENTICATED")
 
-	return NextResponse.json({
-		success:false,
-		message:"user not authenticated",
-	})
-	}
+	//return NextResponse.json({
+	//	success:false,
+	//	message:"user not authenticated",
+	//})
+	//}
 
 	const {prompt}= await req.json();
 	
@@ -28,11 +26,12 @@ export async function  POST(req:NextRequest){
 		timestamp:Date.now(),
 	};
 
-	addChat(user._id,userPrompt)
-
+	
 
 		
-	const GEMINI_API_KEY= user.api_key;
+	//const GEMINI_API_KEY= user.api_key;
+	
+const GEMINI_API_KEY="AIzaSyDVPmFLH3s5EPrEL1-v6olrEQtJpd9xkMk"
 	console.log("CALL TO API###")
 	const response = await fetch(GEMINI_API_URL + `?key=${GEMINI_API_KEY}`, {
 		method: "POST",
@@ -49,31 +48,33 @@ export async function  POST(req:NextRequest){
 	});
 
 	console.log(`RESPONSE STATUS FROM AI ",${response.status}`);
+	
+console.log("STATUS:", response.status);
+
+if (!response.ok) {
+  const t = await response.text();
+  throw new Error(t);
+}
 	const geminiData = await response.json();
-
-	const assistantReply =
+	const curResponse =
 		geminiData.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
-
-	const message = {
-		role: "assistant",
-		content: assistantReply,
-		timestamp: Date.now(),
-	};
-
-	addChat(user._id,message);
 
 	return NextResponse.json({
 		success:true,
-		data:message,
+		data:{
+		content:
+			curResponse ||
+			curResponse?.toString?.() ||
+			JSON.stringify(curResponse),
+
+		},
 	})
 
 	} 
-	catch (error) {
-		console.error("[AI ROUTE] Error occurred:", error);
-		return NextResponse.json({
-			success: false,
-			message: error.message || error,
-		});
-	}
+catch (err: any) {
+  return NextResponse.json({
+    success: false,
+    error: err?.message || "Something went wrong",
+  });
 }
-
+}
