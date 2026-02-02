@@ -43,7 +43,7 @@ export default function Home() {
   if (isMobile) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-grey">
+        <p className="text-white">
           Currently not available on smaller devices.
         </p>
       </div>
@@ -73,14 +73,14 @@ export default function Home() {
             <span>
               <FontAwesomeIcon
                 icon={faArrowRotateLeft}
-                className="text-gray-500 hover:scale-125 hover:bg-[#313638] rounded-lg p-2 text-sm transform transition duration-200 cursor-pointer"
+                className="text-gray-500 hover:scale-110 hover:bg-[#313638] rounded-lg p-2 text-sm transform transition duration-200 cursor-pointer"
               />
             </span>
 
             <span>
               <FontAwesomeIcon
                 icon={faCamera}
-                className="text-gray-500 hover:scale-125 hover:bg-[#313638] rounded-lg p-2 transform transition duration-200 cursor-pointer"
+                className="text-gray-500 hover:scale-110 hover:bg-[#313638] rounded-lg p-2 transform transition duration-200 cursor-pointer"
               />
             </span>
 
@@ -88,7 +88,7 @@ export default function Home() {
               <FontAwesomeIcon
                 icon={faLink}
                 onClick={() => { window.location.href = "https://texin.vercel.app/donate.html" }}
-                className="text-gray-500 hover:scale-125 hover:bg-[#313638] rounded-lg p-2 transform transition duration-200 cursor-pointer"
+                className="text-gray-500 hover:scale-110 hover:bg-[#313638] rounded-lg p-2 transform transition duration-200 cursor-pointer"
               />
             </span>
           </div>
@@ -97,8 +97,8 @@ export default function Home() {
             <div className="bg-[#313638] pointer-events-none">  
               <img
                 id="src"
-                className="w-full h-full object-cover pointer-events-none"
-                src={uploadedImage || "file.png"}
+              className={` h-full object-cover pointer-events-none ${!uploadedImage ? "w-32" : "w-full"}`}
+                 src={uploadedImage || "file.svg"}
                 alt="Main"
               />
             </div>

@@ -32,11 +32,11 @@ const Chat = () => {
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center">
 	    <Image
-                  src="/favic/apple-touch-icon.png"
+                  src="/logo.png"
                   alt="Logo"
                   width={64}
                   height={64}
-                  className="h-16 w-16 filter grayscale"
+                  className="h-16 w-16  invert brightness-200 "
                 />
 
             <p className="text-2xl font-kode font-medium">aizen</p>
@@ -60,8 +60,8 @@ const Chat = () => {
             {isLoading && (
               <div className="flex gap-4 py-3 items-center">
                 <Image
-                  className="h-9 w-9 p-1 border border-white/15 rounded-full"
-                  src="/favic/favicon.png"
+                  className="h-9 w-9 p-1 border  invert brightness-200 border-white/15 rounded-full"
+                  src="/logo.png"
                   alt="Logo"
                   width={36}
                   height={36}
