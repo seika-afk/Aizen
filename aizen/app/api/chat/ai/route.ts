@@ -19,7 +19,7 @@ Rules:
 - The command must start with "ffmpeg"
 - Use the exact absolute paths provided above for input and output
 - Do not include any text before or after the command
-
+Keep the ffmpeg commands direct and if possible ,single lined.
 Example reply:
 ffmpeg -y -i INPUT_PATH -vf "crop=iw:ih/2:0:0" OUTPUT_PATH
 `.trim();
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
     console.log("[chat/ai] Running:", ffmpegCmd);
     try {
       execSync(ffmpegCmd);
-      console.log("[chat/ai] ffmpeg done ✓");
+      console.log("[chat/ai] ffmpeg done ");
       fs.copyFileSync(output, input);
     } catch (ffErr: any) {
       const stderr = ffErr.stderr?.toString() ?? ffErr.message;
