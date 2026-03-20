@@ -16,7 +16,8 @@ cd aizen
 npm install
 ```
 3. Setup `.env` -> :`OPENROUTER_API_KEY`
-4. Run The ui
+(also install ffmpeg on your system , if its not present already)
+5. Run The ui
 ```
 npm run dev
 ```
