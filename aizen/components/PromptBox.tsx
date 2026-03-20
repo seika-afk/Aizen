@@ -1,71 +1,66 @@
 'use client';
 import axios from "axios";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { useState } from "react";
 
 interface PromptBoxProps {
   isLoading: boolean;
   setIsLoading: any;
   setMessages: any;
+  onAiResponse?: (data: { imageUpdated?: boolean; outputUrl?: string }) => void;
 }
 
-const PromptBox: React.FC<PromptBoxProps> = ({isLoading,setIsLoading,setMessages})=>{
+const PromptBox: React.FC<PromptBoxProps> = ({ isLoading, setIsLoading, setMessages, onAiResponse }) => {
+  const [prompt, setPrompt] = useState("");
 
-const [prompt,setPrompt]=useState("");
-const handleKeyDown=(e:any)=>{
-if(e.key==="Enter" && !e.shiftKey){
+  const handleKeyDown = (e: any) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendPrompt(e);
+    }
+  };
 
-e.preventDefault();
-sendPrompt(e);
-
-}
-}
-
-
-const sendPrompt= async(e:any)=>{
-const promptCopy=prompt;
-
-try{
-
-e.preventDefault();
-    if (isLoading) return toast.error("Wait for the previous prompt response");
-
-    setIsLoading(true);
+  const sendPrompt = async (e: any) => {
+    const promptCopy = prompt;
+    try {
+      e.preventDefault();
+      if (isLoading) return toast.error("Wait for the previous prompt response");
+      setIsLoading(true);
       setPrompt("");
 
-    const userPrompt = { role: "user", content: prompt, timestamp: Date.now() };
-      setMessages((prev) => [...prev, userPrompt]);
+      const userPrompt = { role: "user", content: prompt, timestamp: Date.now() };
+      setMessages((prev: any) => [...prev, userPrompt]);
 
-         const { data } = await axios.post("/api/chat/ai", { prompt });
+      const { data } = await axios.post("/api/chat/ai", { prompt });
 
-
-
-if (data.success) {
+      if (data.success) {
         const message = data.data.content;
         const messageTokens = message.split(" ");
+        let assistantMessage = { role: "assistant", content: "", timestamp: Date.now() };
+        setMessages((prev: any) => [...prev, assistantMessage]);
 
-        let assistantMessage = { role: "assistant", content: message, timestamp: Date.now() };
-        setMessages((prev) => [...prev, assistantMessage]);
-
+        // Typewriter effect
         for (let i = 0; i < messageTokens.length; i++) {
           setTimeout(() => {
             assistantMessage.content = messageTokens.slice(0, i + 1).join(" ");
-            setMessages((prev) => {
+            setMessages((prev: any) => {
               const updated = [...prev];
               updated[updated.length - 1] = { ...assistantMessage };
               return updated;
             });
-          }, i * 50); 
+          }, i * 50);
+        }
+
+        // Notify parent if image was updated
+        if (data.data.imageUpdated && onAiResponse) {
+          onAiResponse({ imageUpdated: true, outputUrl: data.data.outputUrl });
         }
       } else {
         toast.error(data.error || "Failed to get AI response");
         setPrompt(promptCopy);
       }
-
-
-}catch (error:any) {
+    } catch (error: any) {
       toast.error(error.message || "Something went wrong");
       setPrompt(promptCopy);
     } finally {
@@ -73,9 +68,8 @@ if (data.success) {
     }
   };
 
-
-
-return (   <form
+  return (
+    <form
       onSubmit={sendPrompt}
       className="w-full bg-[#383D3F] max-w-5xl backdrop-blur-lg border-l border-r border-gray-500 p-4 rounded-3xl mt-4 transition-all"
     >
@@ -88,7 +82,6 @@ return (   <form
         onChange={(e) => setPrompt(e.target.value)}
         value={prompt}
       />
-
       <div className="flex items-center justify-between text-sm">
         <div className="flex items-center gap-2"></div>
         <div className="flex items-center gap-2">
@@ -108,7 +101,6 @@ return (   <form
       </div>
     </form>
   );
-
-}
+};
 
 export default PromptBox;

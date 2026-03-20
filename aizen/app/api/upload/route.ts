@@ -11,11 +11,10 @@ export const POST = async (req: NextRequest) => {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
-  // save to public/uploads/
   const uploadDir = path.join(process.cwd(), "public", "uploads");
   if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
-  const filePath = path.join(uploadDir, file.name);
+ const filePath = path.join(uploadDir, "input.jpeg");
   fs.writeFileSync(filePath, buffer);
 console.log("added image")
   return NextResponse.json({
