@@ -19,7 +19,8 @@ export const POST = async (req: NextRequest) => {
 console.log("added image")
   return NextResponse.json({
     success: true,
-    url: `/uploads/${file.name}`,
+  url: `/uploads/input.jpeg`,
+
   });
 };
 
